@@ -1,0 +1,32 @@
+import pyautogui
+import pytesseract
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\\Users\\Wellington\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe'
+
+# Função para extrair texto da região da tela especificada
+def extrair_texto(x, y, largura, altura):
+    screenshot = pyautogui.screenshot(region=(x, y, largura, altura))
+    texto = pytesseract.image_to_string(screenshot)
+    return texto.strip()
+
+# Nome do aplicativo que você deseja automatizar
+nome_do_aplicativo = "onde salvei o bgl de leitura - Bloco de Notas"
+
+# Encontrar a janela do aplicativo pelo título
+janela_do_aplicativo = pyautogui.getWindowsWithTitle(nome_do_aplicativo)
+
+if janela_do_aplicativo:
+    # Obter as coordenadas e dimensões da janela
+    x1, y1, largura, altura = janela_do_aplicativo[0].left, janela_do_aplicativo[0].top, janela_do_aplicativo[0].width, janela_do_aplicativo[0].height
+
+    # Tirar print da região da tela do aplicativo
+    screenshot = pyautogui.screenshot(region=(x1, y1, largura, altura))
+    screenshot.save("print_do_aplicativo.png")
+
+    # Extrair texto da imagem
+    texto_extraido = extrair_texto(x1, y1, largura, altura)
+
+    # Escrever todo o texto
+    print(texto_extraido)
+else:
+    print(f"O aplicativo '{nome_do_aplicativo}' não está aberto.")
