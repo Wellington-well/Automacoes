@@ -1,32 +1,37 @@
 import pyautogui
 import pytesseract
 
+#passando o caminho do executável pytesseract
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Users\\Wellington\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe'
 
-# Função para extrair texto da região da tela especificada
+# Função para tirar o print de tela e ler oq esta escrito em tela
 def extrair_texto(x, y, largura, altura):
-    screenshot = pyautogui.screenshot(region=(x, y, largura, altura))
-    texto = pytesseract.image_to_string(screenshot)
-    return texto.strip()
+    screenshot = pyautogui.screenshot(region=(x, y, largura, altura)) # tira print da dimensão passada no parâmetro
+    texto = pytesseract.image_to_string(screenshot) # pegando os textos identificados do print e guardando na variável 'texto'
+    return texto.strip() #retornando o texto do print 
 
-# Nome do aplicativo que você deseja automatizar
-nome_do_aplicativo = "onde salvei o bgl de leitura - Bloco de Notas"
+# passando o título da aba do aplicativo 
+nome_do_aplicativo = "onde salvei o bgl de leitura - Bloco de Notas" 
 
-# Encontrar a janela do aplicativo pelo título
+# encontrar a janela do aplicativo pelo título
 janela_do_aplicativo = pyautogui.getWindowsWithTitle(nome_do_aplicativo)
 
+# esse if ta verificando se a tela existe 
 if janela_do_aplicativo:
-    # Obter as coordenadas e dimensões da janela
+    # pegando as coordenadas do apl
     x1, y1, largura, altura = janela_do_aplicativo[0].left, janela_do_aplicativo[0].top, janela_do_aplicativo[0].width, janela_do_aplicativo[0].height
 
-    # Tirar print da região da tela do aplicativo
+    # tira o print da tela
     screenshot = pyautogui.screenshot(region=(x1, y1, largura, altura))
-    screenshot.save("print_do_aplicativo.png")
+    
+# salvando o print separa conferir as informações 
+screenshot.save("print_do_aplicativo.png")
 
-    # Extrair texto da imagem
+    # pegando o texto q ta no print 
     texto_extraido = extrair_texto(x1, y1, largura, altura)
 
-    # Escrever todo o texto
+    # escrevi o texto todo do print 
     print(texto_extraido)
 else:
-    print(f"O aplicativo '{nome_do_aplicativo}' não está aberto.")
+    # se não achar a tela vai da esse erro.
+     print(f"O aplicativo '{nome_do_aplicativo}' não está aberto.")
