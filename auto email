@@ -1,0 +1,18 @@
+from exchangelib import Credentials, Account
+
+def baixar_anexos(email, senha, assunto_alvo, pasta_destino):
+    # Configurando as credenciais
+    credenciais = Credentials(email, senha)
+    
+    # Conectando à conta do Outlook
+    conta_outlook = Account(email, credentials=credenciais, autodiscover=True)
+
+    # Procurando por e-mails com o assunto alvo
+    emails_alvo = conta_outlook.inbox.filter(subject=assunto_alvo)
+
+    for email in emails_alvo:
+        # Iterando sobre os anexos
+        for anexo in email.attachments:
+            # Salvando o anexo na pasta de destino
+            with open(f'{pasta_destino}/{anexo.name}', 'wb') as f:
+                f.write(anexo.content)
