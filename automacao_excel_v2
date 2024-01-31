@@ -1,0 +1,37 @@
+import os
+import pandas as pd
+
+# Caminho para o arquivo principal ("excel 1")
+caminho_excel1 = 'caminho/do/excel1.xlsx'
+
+# Lista dos arquivos "0000-000 - remetente"
+pasta_remetentes = 'caminho/da/pasta/com/remetentes'
+arquivos_remetentes = [f for f in os.listdir(pasta_remetentes) if f.endswith('.xlsx')]
+
+# Carregue o "excel 1" como um DataFrame
+df_excel1 = pd.read_excel(caminho_excel1)
+
+# Loop através de cada arquivo "0000-000 - remetente"
+for arquivo_remetente in arquivos_remetentes:
+    caminho_arquivo_remetente = os.path.join(pasta_remetentes, arquivo_remetente)
+
+    # Extrair o grupo e cota do nome do arquivo
+    # Neste exemplo, assumimos que os 10 primeiros caracteres representam o grupo e cota
+    grupo_cota = arquivo_remetente[:10]
+
+    # Verificar se o grupo e cota existe no "excel 1"
+    if grupo_cota in df_excel1['Grupo e Cota'].values:
+        # Carregar o "0000-000 - remetente" como um DataFrame
+        df_remetente = pd.read_excel(caminho_arquivo_remetente)
+
+        # Encontrar a linha correspondente no "excel 1"
+        linha_correspondente = df_excel1.index[df_excel1['Grupo e Cota'] == grupo_cota].tolist()[0]
+
+        # Iterar sobre as linhas do "excel 1" e "0000-000 - remetente" e preencher as colunas correspondentes
+        for index, row in df_remetente.iterrows():
+            if row['Categoria'] in df_excel1.columns:
+                coluna_correspondente = row['Categoria']
+                df_excel1.at[linha_correspondente, coluna_correspondente] = row['Valor']
+
+# Salvar as alterações de volta no "excel 1"
+df_excel1.to_excel(caminho_excel1, index=False)
