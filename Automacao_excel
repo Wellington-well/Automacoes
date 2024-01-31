@@ -1,3 +1,45 @@
+# import os
+# import pandas as pd
+
+# # Caminho para o arquivo principal ("excel 1")
+# caminho_excel1 = 'C:\\Users\\Wellington\\Documents\\teste_auto_excel\\Excel1.xlsx'
+
+# # Lista dos arquivos "0000-000 - remetente"
+# pasta_remetentes = 'C:\\Users\\Wellington\\Documents\\teste_auto_excel\\remetentes'
+# arquivos_remetentes = [f for f in os.listdir(pasta_remetentes) if f.endswith('.xlsx')]
+
+# # Carregue o "excel 1" como um DataFrame
+# df_excel1 = pd.read_excel(caminho_excel1)
+
+# # Loop através de cada arquivo "0000-000 - remetente"
+# for arquivo_remetente in arquivos_remetentes:
+#     caminho_arquivo_remetente = os.path.join(pasta_remetentes, arquivo_remetente)
+
+#     # Extrair o grupo e cota do nome do arquivo
+#     grupo_cota = os.path.splitext(arquivo_remetente)[0]
+
+#     # Verificar se o grupo e cota existe no "excel 1"
+#     if grupo_cota in df_excel1['grupo/cota'].values:
+#         # Carregar o "0000-000 - remetente" como um DataFrame
+#         df_remetente = pd.read_excel(caminho_arquivo_remetente)
+
+#         # Encontrar a linha correspondente no "excel 1"
+#         linha_correspondente = df_excel1.index[df_excel1['grupo/cota'] == grupo_cota].tolist()[0]
+
+#         # Preencher as colunas correspondentes no "excel 1" com base nas informações do "0000-000 - remetente"
+#         df_excel1.at[linha_correspondente, 'preencher'] = df_remetente['preencher'].iloc[0]
+#         # Adicione mais linhas conforme necessário para as colunas subsequentes
+
+# # Salvar as alterações de volta no "excel 1"
+# df_excel1.to_excel(caminho_excel1, index=False)
+# print('fim')
+# versão 1 deu certo, mas o nome da linha precia ser igual ao nome do arquivo
+
+
+##########################################################################################
+# a="1234-345 remetente"
+# print(a[:8])
+
 import os
 import pandas as pd
 
@@ -16,7 +58,8 @@ for arquivo_remetente in arquivos_remetentes:
     caminho_arquivo_remetente = os.path.join(pasta_remetentes, arquivo_remetente)
 
     # Extrair o grupo e cota do nome do arquivo
-    grupo_cota = os.path.splitext(arquivo_remetente)[0]
+    # Neste exemplo, assumimos que os 10 primeiros caracteres representam o grupo e cota
+    grupo_cota = arquivo_remetente[:8]
 
     # Verificar se o grupo e cota existe no "excel 1"
     if grupo_cota in df_excel1['grupo/cota'].values:
@@ -32,4 +75,7 @@ for arquivo_remetente in arquivos_remetentes:
 
 # Salvar as alterações de volta no "excel 1"
 df_excel1.to_excel(caminho_excel1, index=False)
-print('fim')
+
+print("fim")
+
+#versão 2 pega os 8 primeiros valores do nome do arquivo
