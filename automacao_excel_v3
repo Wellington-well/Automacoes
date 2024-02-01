@@ -1,0 +1,36 @@
+import pandas as pd
+import os
+
+# Passar o caminho do arquivo excel que vai receber a informações
+excel_principal_path = "C:\\Users\\Wellington\\Documents\\teste_auto_excel\\08-12-2023 -PLDs a PAGAR.xlsx"
+# Lendo o arquivo excel e transformando ele em um DataFrame(DF)
+df_principal = pd.read_excel(excel_principal_path)
+
+# Passar o caminho da pasta de onde estão os arquivos de cada grupo e cota
+diretorio_arquivos = "C:\\Users\\Wellington\\Documents\\teste_auto_excel\\remetentes"
+
+# Passando por cada arquivo que está na pasta
+for arquivo_nome in os.listdir(diretorio_arquivos):
+    # Guardando o caminho do arquivo 
+    arquivo_path = os.path.join(diretorio_arquivos, arquivo_nome)
+
+    # Verificando se é um arquivo xlsx(excel)
+    if arquivo_path.endswith('.xlsx'):
+        # Lendo o arquivo e transformando ele em DF, ignora as 3 primeiras linhas e define as colunas com 'A' e 'B' 
+        df_adicional = pd.read_excel(arquivo_path, skiprows=3, header=None, names=['A', 'B'])
+
+        # Pegando os valores da colunas onde a linha for igual '% adiantamento' e guardando 
+        valor_adiantamento = df_adicional.loc[df_adicional['A'] == '% adiantamento', 'B'].values[0]
+        # Pegando os valores da colunas onde a linha for igual 'valor categoria data aparição' e guardando 
+        valor_categoria = df_adicional.loc[df_adicional['A'] == 'valor categoria data aparição', 'B'].values[0]
+
+        # Pegando grupo e cota do nome do arquivo
+        grupo_cota = arquivo_nome.split(' - ')[0] 
+        # Passando o True ou False se o grupo e cota do excel princial é igual ao que está no nome do arquivo
+        filtro = df_principal['grupo/cota'] == grupo_cota
+        # se for True ele vai passar os valores correspondente 
+        df_principal.loc[filtro, 'porcentagem adiantamento e devolução'] = valor_adiantamento
+        df_principal.loc[filtro, 'categoria na data apuração'] = valor_categoria
+
+# Salvado o arquivo atualizado 
+df_principal.to_excel("C:\\Users\\Wellington\\Documents\\teste_auto_excel\\validacao\\08-12-2023 -PLDs a PAGAR_atualizado.xlsx", index=False)
