@@ -1,0 +1,27 @@
+import pandas as pd
+
+listagrupo = ['001295', '001278']
+listacota = ['0547', '0045']
+sim = "sim"
+nao = "nao"
+# Função para verificar se o grupo e a cota estão na lista de valores
+def verificar_visualizacao(df): # tem q passar o dataframe como parametro da função
+    for index, row in df.iterrows():
+        grupo = row['Grupo'] 
+        cota = row['Cota']
+        for i in listagrupo:
+            if grupo == i:
+                for j in listacota:
+                    if cota == j:
+                        df.at[index, 'visualizacao'] = sim # passo onde deve ser sim 
+            
+                    else:
+                       df.at[index, 'visualizacao'] = nao # passo onde deve ser nao
+            else:
+                df.at[index, 'visualizacao'] = nao
+        df.to_excel("teste.xlsx") # passo a criação do arquivo excel dentro do fort
+
+df = pd.read_excel('Pasta1.xlsx', dtype={'Grupo': str, 'Cota':str}) # faço a leitura do DF antes de chamar a função 
+df['visualizacao'] = "" # crio a coluna visualização antes de chamar a função
+#obs: quando terminar de rodar limpe o arquivo excel com a linhas que já foram analisadas 
+verificar_visualizacao(df)
