@@ -1,0 +1,21 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+# Lista de URLs das abas
+urls = ["url_da_aba_1", "url_da_aba_2", "url_da_aba_3", "url_da_aba_4", "url_da_aba_5"]
+
+# Configurações do Selenium
+options = webdriver.ChromeOptions()
+options.add_argument("--start-maximized")  # Maximizar a janela do navegador
+driver = webdriver.Chrome(chrome_options=options)
+
+try:
+    while True:
+        for url in urls:
+            driver.get(url)
+            time.sleep(60)  # Esperar 1 minuto
+            # Ir para a próxima aba
+            driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.TAB)
+finally:
+    driver.quit()
