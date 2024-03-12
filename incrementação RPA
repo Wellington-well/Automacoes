@@ -1,7 +1,7 @@
 import pandas as pd
 
-listagrupo = ['001295', '001278']
-listacota = ['0547', '0045']
+listagrupo = ['000000', '000000']
+listacota = ['0000', '0000']
 sim = "sim"
 nao = "nao"
 # Função para verificar se o grupo e a cota estão na lista de valores
