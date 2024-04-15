@@ -1,0 +1,49 @@
+from selenium import webdriver
+import pandas as pd
+
+# Carregar os dados do Excel
+df = pd.read_excel('seu_arquivo.xlsx')
+
+# Inicializar o WebDriver do Selenium (certifique-se de ter o ChromeDriver instalado e no PATH)
+driver = webdriver.Chrome()
+
+# Abrir o site
+driver.get('URL_do_site')
+
+# Iterar sobre as linhas do DataFrame
+for index, row in df.iterrows():
+    grupo = row['grupo']
+    cota = row['cota']
+    
+    # Encontrar os elementos correspondentes no site
+    elementos = driver.find_elements_by_xpath("//tr[td[1][text()='%s' and following-sibling::td[1][text()='%s']]]" % (grupo, cota))
+    
+    # Clicar nas caixas correspondentes
+    for elemento in elementos:
+        elemento.find_element_by_xpath(".//input[@type='checkbox']").click()
+
+# Fechar o navegador após a conclusão
+driver.quit()
+
+
+
+// Encontrar elementos correspondentes no site:
+
+// python
+// Copy code
+// elementos = driver.find_elements_by_xpath("//tr[td[1][text()='%s' and following-sibling::td[1][text()='%s']]]" % (grupo, cota))
+// Esta linha usa XPath para encontrar os elementos na página que correspondem ao grupo e cota da linha atual do DataFrame.
+
+---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+
+//     Clicar nas caixas de seleção correspondentes:
+
+// python
+// Copy code
+// for elemento in elementos:
+//     elemento.find_element_by_xpath(".//input[@type='checkbox']").click()
+// Aqui, estamos iterando sobre os elementos encontrados e clicando na caixa de seleção correspondente a cada elemento.
+      
