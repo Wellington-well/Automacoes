@@ -47,3 +47,5 @@ driver.quit()
 //     elemento.find_element_by_xpath(".//input[@type='checkbox']").click()
 // Aqui, estamos iterando sobre os elementos encontrados e clicando na caixa de seleção correspondente a cada elemento.
       
+    xpath = f"//td[text()='{grupo}']/following-sibling::td[text()='{historico}']/preceding-sibling::td/input"
+    checkbox = driver.find_element(By.XPATH, xpath)
